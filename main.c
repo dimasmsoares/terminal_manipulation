@@ -6,26 +6,57 @@
 
 /*PROTOTIPOS*/
 int get_key_press();
+void edit_entry(Entry *e);
+int print_form (Form *f);
+
+typedef struct {
+    char *label;
+    char value[101];   // buffer real
+    int max_len;
+} Entry;
+
+typedef struct {
+    char *label;
+    char **options;   // vetor de strings - ponteiro para ponteiros = array de char *
+    int n_options;
+    int selected;     // pra navegação
+} Droplist;
 
 typedef struct{
-    char *campos[3];
-    char *valores[3];
-    int n_opcoes;
+    Entry entry_name;
+    Droplist droplist_cargo;
+    Droplist droplist_nivel;
 } Form;
 
 int main(){
 
-    int selecionado = 0;
-    //char *opcoes[] = {"Nome: ", "Endereço: ", "Nível: "};
-    //int n_opcoes = 3;
-    Form form = {
-    .campos = {"Nome: ", "Endereço: ", "Nível: "},
-    .valores = {"Dimas Moreira Soares", "SGAN 914 MODULO A", "2"},
-    .n_opcoes = 3
+    Entry nome = {
+        .label = "Nome Completo",
+        .max_len = 100
+    }
+    strcpy(nome.value, "");
+
+    char *opcoes_cargo[] = {"Auxiliar", "Técnico", "Analista", "Consultor"};
+    Droplist cargo = {
+        .label = "Cargo",
+        .options = opcoes_cargo,
+        .n_options = 4,
+        .selected = 0
     };
 
-    while(1){
+    char *opcoes_nivel[] = {"A1", "A2", "A3", "A4", "B5", "B6", "B7", "B8", "Especial 9", "Especial 10"};
+    Droplist nivel = {
+        .label = "Nivel",
+        .options = opcoes_nivel,
+        .n_options = 10,
+        .selected = 0
+    };
 
+    Form formulario = {nome, cargo, nivel};
+
+    int selecionado = 0;
+
+    while(1){
         system("clear");
         printf("\033[?25l");
 
@@ -75,6 +106,7 @@ int main(){
             break;
         }
     }
+
     printf("\033[?25h");
 
     return 0;
@@ -115,3 +147,54 @@ int get_key_press(){
     // Retorna o caractere lido para quem chamou a função.
     return ch;
 }   // END FUCTION get_key_press
+
+void edit_entry(Entry *e){
+    int ch;
+    int pos = strlen(e->value);
+
+    // garante que não estoure se vier algo estranho
+    if(pos > e->max_len) pos = e->max_len;
+
+    printf("\033[?25h"); // mostra cursor
+
+    while(1){
+        ch = get_key_press();
+
+        /* ENTER → termina edição */
+        if(ch == 10){
+            break;
+        }
+
+        /* BACKSPACE (Linux: 127 | alguns terminais: 8) */
+        if(ch == 127 || ch == 8){
+            if(pos > 0){
+                pos--;
+                e->value[pos] = '\0';
+
+                /* apaga visualmente */
+                printf("\b \b");
+                fflush(stdout);
+            }
+        }
+        /* caracteres imprimíveis */
+        else if(ch >= 32 && ch <= 126){
+            if(pos < e->max_len){
+                e->value[pos++] = ch;
+                e->value[pos] = '\0';
+
+                putchar(ch);
+                fflush(stdout);
+            }
+        }
+    }
+
+    printf("\033[?25l"); // esconde cursor
+}
+
+int print_form (Form *f){
+    int selecionado = 0;
+    while(1){
+        system("clear");
+
+    } // END WHILE
+}
