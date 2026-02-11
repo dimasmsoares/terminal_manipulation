@@ -28,10 +28,8 @@ int get_key_press() {
     return ch;
 }
 
-// ... (Sua função menu_simple original estava ok, mantive omitida para focar na multi) ...
 void menu_simple(MenuSimple *menu) {
-    // ... (Copie sua lógica do menu_simple aqui, ela estava 90% correta)
-    // Apenas certifique-se de usar menu->titulo no printf inicial
+
      printf("\033[?25l");
     while (1) {
         system("clear");
@@ -65,13 +63,12 @@ void menu_simple(MenuSimple *menu) {
     printf("\033[?25h");
 }
 
-
 void menu_multi(MenuMulti *menu) {
     int pos_cursor = 0;
     // O cursor pode ir de 0 até n_opcoes.
     // Se pos_cursor == n_opcoes, significa que está no botão "AVANÇAR"
     
-    printf("\033[?25l");
+    printf("\033[?25l");    // Oculta o cursor
 
     while (1) {
         system("clear");
@@ -79,7 +76,7 @@ void menu_multi(MenuMulti *menu) {
         // 1. Título
         if(menu->titulo){
             aplicar_cor(menu->cor_texto_titulo, menu->cor_fundo_titulo);
-            printf("### %s ###\n\t%s\n\n", menu->titulo, menu->comando);
+            printf("########## %s ##########\n\t%s\n\n", menu->titulo, menu->comando);
             resetar_cor();
         }
 
@@ -146,3 +143,4 @@ void menu_multi(MenuMulti *menu) {
     }
     printf("\033[?25h");
 }
+
