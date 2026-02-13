@@ -12,7 +12,7 @@ int main() {
     m1.comando = "Use ENTER para selecionar";
     m1.opcoes = opcoes1;
     m1.n_opcoes = 3;
-    m1.cor_texto_titulo = COR_PRETA; m1.cor_fundo_titulo = COR_PADRAO;
+    m1.cor_texto_titulo = COR_PRETA; m1.cor_fundo_titulo = COR_BRANCA;
     m1.cor_texto_sel = COR_VERMELHA; m1.cor_fundo_sel = COR_PADRAO;
     m1.cor_texto_norm = COR_AZUL;    m1.cor_fundo_norm = COR_PADRAO;
 
