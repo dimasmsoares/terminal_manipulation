@@ -1,50 +1,38 @@
 #include <stdio.h>
-typedef struct Data Data;
 
-typedef struct Data{
-    int d;
-    int m;
-    int y;
+typedef struct Veiculo Veiculo;
 
-    void (*add_dias)(Data *, int);
-    void (*mostrar_data)(Data *);
-} Data;
+typedef struct VTVeiculos{
+    void (*print_veiculo)(Veiculo *);
+} VTVeiculos;
 
-void adicionar_dias(Data *data, int dias){
-    if(data->y % 4 == 0){
-	if(data->y % 100 == 0){
-        //não bissexto
-	}
-	else if(data->y % 400 == 0){
-	}
+typedef struct Veiculo{
+    int rodas;
+    VTVeiculos *v_table;
+} Veiculo;
+
+void print(Veiculo *self){
+    for(int i = 0; i < self->rodas; i++){
+        printf("O");
     }
-     data->d += dias;
+    printf("\n");
 }
 
-void print_data(Data *data){
-    printf("%02d/%02d/%02d\n", data->d, data->m, data->y);
-}
-
-Data __init__(int d, int m, int y){
-    Data data;
-    
-    data.d = d;
-    data.m = m;
-    data.y = y;
-
-    data.add_dias = adicionar_dias;
-    data.mostrar_data = print_data;
-    return data;
+void print2(Veiculo *self){
+    for(int i = 0; i < self->rodas; i++){
+        printf("=");
+    }
+    printf("\n");
 }
 
 int main(){
-    Data data = __init__(1,1,2026);
-    
-    data.mostrar_data(&data);
+    VTVeiculos vt_veiculos = {print};
 
-    data.add_dias(&data, 20);
+    Veiculo v1 = {4, &vt_veiculos};
+    Veiculo v2 = {2, &vt_veiculos};
 
-    data.mostrar_data(&data);
+    v1.v_table->print_veiculo(&v1);
+    v2.v_table->print_veiculo(&v2);
 
     return 0;
 }
